@@ -7,25 +7,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 const port = 3000
 const hostName = "127.0.0.1"
 
-const { Sequelize } = require('sequelize')
-
-const sequelize = new Sequelize({
-    database: 'pi_medsos',
-    username: 'root',
-    password: 'JanganLupa321!',
-    host: 'localhost',
-    dialect: 'mysql'
-})
-
-app.get('/', async (req, res) => {
-
-    try {
-        await sequelize.authenticate();
-        console.log('Connection has been established successfully.');
-    } catch (error) {
-        console.error('Unable to connect to the database:', error);
-    }
-
+app.get('/', (req, res) => {
     res.send({
         message: 'Home Page'
     })
@@ -62,14 +44,6 @@ app.put('/student/:id', (req, res) => {
 })
 
 app.listen(port, () => console.log(`Server running at http://${hostName}:${port}`))
-
-// app.use('/', () => {
-//     routes.get('/student', (req, res) => {
-//         res.status(200).json({
-//             message: 'Student founded'
-//         })
-//     })
-// })
 
 
 
