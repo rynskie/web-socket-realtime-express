@@ -5,7 +5,8 @@
 /node_modules
 /tmp/*
 /tmp
-/_server/config.json
+/_server/config/
+/_server/config/config.json
 /config/config.json
 stderr.log
 .htaccess

@@ -1,45 +1,20 @@
 const express = require('express')
 const bodyParser = require('body-parser')
+const authRoutes = require('./routes/authRoutes')
+const studentRoutes = require('./routes/studentRoutes')
 
 const app = express()
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
-const port = 3000
+const port = 3001
 const hostName = "127.0.0.1"
+
+app.use('/v1/auth', authRoutes(express))
+app.use('/v1/student', studentRoutes(express))
 
 app.get('/', (req, res) => {
     res.send({
         message: 'Home Page'
-    })
-})
-
-app.get('/student', (req, res) => {
-    res.send({
-        message: 'this end point for fetching student data'
-    })
-})
-
-app.post('/student', (req, res) => {
-    res.send({
-        message: 'this end point for store student data'
-    })
-})
-
-app.delete('/student/:id', (req, res) => {
-    res.send({
-        message: 'this end point for delete student data'
-    })
-})
-
-app.get('/student/:id', (req, res) => {
-    res.send({
-        message: 'this end point for fetch detail student data'
-    })
-})
-
-app.put('/student/:id', (req, res) => {
-    res.send({
-        message: 'this end point for update student data'
     })
 })
 

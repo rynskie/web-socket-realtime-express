@@ -10,14 +10,20 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      student.belongsTo(models.major, {
+        foreignKey: 'major_id'
+      })
     }
   }
   student.init({
     firstName: DataTypes.STRING,
     lastName: DataTypes.STRING,
-    classes: DataTypes.ENUM,
-    gender: DataTypes.ENUM,
+    classes: DataTypes.ENUM({
+      values: ["X", "XI", "XII", "XII"]
+    }),
+    gender: DataTypes.ENUM({
+      values: ["M", "F"]
+    }),
     major_id: DataTypes.INTEGER
   }, {
     sequelize,
