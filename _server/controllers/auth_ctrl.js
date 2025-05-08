@@ -8,6 +8,59 @@ const {
 } = require("../models")
 const bcryptjs = require('bcryptjs')
 let self = {}
+const jwt = require('jsonwebtoken')
+
+self.login = async (req, res) => {
+    let errors = validationResult(req)
+    if (!errors.isEmpty()) {
+        return res.status(422).json(errors)
+    }
+    const {
+        username,
+        password
+    } = req.body
+
+    const userData = await user.findOne({
+        include: [
+            { model: role },
+            { model: student },
+        ],
+        where: {
+            username: username
+        },
+        attributes: ["id", "username", "email", "password"]
+    })
+
+    let isCorrectPass = await bcryptjs.compare(password, userData.password)
+
+    if (!isCorrectPass) {
+        return res.status(401).json({
+            message: "invalid password!",
+        })
+    }
+    const options = {
+        expiresIn: '24h'
+    };
+    const secret = "PPLG_JAYA_JAYA_JAYA_JAYA"
+
+    const token = jwt.sign({
+        data: {
+            id: userData.id,
+            username: userData.username,
+            email: userData.email,
+            firstName: userData.students[0].firstName,
+            lastName: userData.students[0].lastName,
+            classes: userData.students[0].classes,
+            gender: userData.students[0].gender,
+            role: userData.roles[0].name
+        },
+    }, secret, options)
+
+    res.status(200).json({
+        message: "login success!",
+        token: token
+    })
+}
 
 self.save = async (req, res) => {
     let errors = validationResult(req)

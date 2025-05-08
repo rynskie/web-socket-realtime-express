@@ -10,6 +10,7 @@ const port = 3001
 const hostName = "127.0.0.1"
 
 app.use('/v1/auth', authRoutes(express))
+
 app.use('/v1/student', studentRoutes(express))
 
 app.get('/', (req, res) => {
