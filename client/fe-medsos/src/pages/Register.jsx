@@ -13,8 +13,19 @@ import {
 import CssBaseline from '@mui/material/CssBaseline'
 import { Link } from "react-router-dom"
 import { CardRegister, SignInContainer } from "../utils/style"
+import { useForm } from 'react-hook-form'
+import { useDispatch, useSelector } from 'react-redux'
+import { useEffect } from 'react'
+import { fetchMajor } from '../redux/action/majorAction'
 
 const Register = () => {
+    const { register, handleSubmit } = useForm()
+    const onSubmit = (value) => console.log(value)
+    const major = useSelector(root => root?.major)
+    const dispatch = useDispatch()
+
+    useEffect(() => dispatch(fetchMajor()), [])
+
     return (<>
         <CssBaseline enableColorScheme />
         <SignInContainer direction="column" justifyContent="space-between">
@@ -28,7 +39,7 @@ const Register = () => {
                 </Typography>
                 <Box
                     component="form"
-                    // onSubmit={handleSubmit}
+                    onSubmit={handleSubmit(onSubmit)}
                     noValidate
                     sx={{
                         display: 'flex',
@@ -42,18 +53,15 @@ const Register = () => {
                             <FormControl fullWidth>
                                 <FormLabel htmlFor="username">Username</FormLabel>
                                 <TextField
-                                    // error={emailError}
-                                    // helperText={emailErrorMessage}
                                     id="username"
                                     type="text"
-                                    name="username"
                                     placeholder="Username"
                                     autoComplete="username"
                                     autoFocus
                                     required
                                     fullWidth
                                     variant="outlined"
-                                // color={emailError ? 'error' : 'primary'}
+                                    {...register('username')}
                                 />
                             </FormControl>
                         </Grid>
@@ -61,9 +69,6 @@ const Register = () => {
                             <FormControl fullWidth>
                                 <FormLabel htmlFor="password">Password</FormLabel>
                                 <TextField
-                                    // error={passwordError}
-                                    // helperText={passwordErrorMessage}
-                                    name="password"
                                     placeholder="••••••"
                                     type="password"
                                     id="password"
@@ -72,7 +77,7 @@ const Register = () => {
                                     required
                                     fullWidth
                                     variant="outlined"
-                                // color={passwordError ? 'error' : 'primary'}
+                                    {...register('password')}
                                 />
                             </FormControl>
                         </Grid>
@@ -80,18 +85,15 @@ const Register = () => {
                             <FormControl fullWidth>
                                 <FormLabel htmlFor="email">Email</FormLabel>
                                 <TextField
-                                    // error={emailError}
-                                    // helperText={emailErrorMessage}
                                     id="emil"
                                     type="text"
-                                    name="email"
                                     placeholder="Email"
                                     autoComplete="email"
                                     autoFocus
                                     required
                                     fullWidth
                                     variant="outlined"
-                                // color={emailError ? 'error' : 'primary'}
+                                    {...register('email')}
                                 />
                             </FormControl>
                         </Grid>
@@ -99,18 +101,15 @@ const Register = () => {
                             <FormControl fullWidth>
                                 <FormLabel htmlFor="firstName">First Name</FormLabel>
                                 <TextField
-                                    // error={emailError}
-                                    // helperText={emailErrorMessage}
                                     id="firstName"
                                     type="text"
-                                    name="firstName"
                                     placeholder="First Name"
                                     autoComplete="firstName"
                                     autoFocus
                                     required
                                     fullWidth
                                     variant="outlined"
-                                // color={emailError ? 'error' : 'primary'}
+                                    {...register('firstName')}
                                 />
                             </FormControl>
                         </Grid>
@@ -118,30 +117,24 @@ const Register = () => {
                             <FormControl fullWidth>
                                 <FormLabel htmlFor="lastName">Last Name</FormLabel>
                                 <TextField
-                                    // error={emailError}
-                                    // helperText={emailErrorMessage}
                                     id="lastName"
                                     type="text"
-                                    name="lastName"
                                     placeholder="Last Name"
                                     autoComplete="lastName"
                                     autoFocus
                                     required
                                     fullWidth
                                     variant="outlined"
-                                // color={emailError ? 'error' : 'primary'}
+                                    {...register('lastName')}
                                 />
                             </FormControl>
                         </Grid>
                         <Grid size={6}>
                             <FormControl fullWidth style={{ marginTop: 23 }}>
-                                <InputLabel id="demo-simple-select-label">Classes</InputLabel>
+                                <InputLabel >Classes</InputLabel>
                                 <Select
-                                    labelId="demo-simple-select-label-major"
-                                    id="demo-simple-select"
-                                    // value={age}
                                     label="Classes"
-                                // onChange={handleChange}
+                                    {...register('classes')}
                                 >
                                     <MenuItem value={"X"}>X</MenuItem>
                                     <MenuItem value={"XI"}>XI</MenuItem>
@@ -154,20 +147,16 @@ const Register = () => {
                             <FormControl fullWidth style={{ marginTop: 23 }}>
                                 <InputLabel id="demo-simple-select-label-major">Majors</InputLabel>
                                 <Select
-                                    labelId="demo-simple-select-label-major"
                                     id="demo-simple-select"
-                                    // value={age}
+                                    {...register('major')}
                                     label="Major"
-                                // onChange={handleChange}
                                 >
-                                    <MenuItem value={"PPLG"}>PPLG</MenuItem>
-                                    <MenuItem value={"TM"}>TM</MenuItem>
-                                    <MenuItem value={"MPLB"}>MPLB</MenuItem>
-                                    <MenuItem value={"TJKT"}>TJKT</MenuItem>
-                                    <MenuItem value={"TSM"}>TSM</MenuItem>
-                                    <MenuItem value={"TKR"}>TKR</MenuItem>
-                                    <MenuItem value={"HR"}>HR</MenuItem>
-                                    <MenuItem value={"DKV"}>DKV</MenuItem>
+                                    {
+                                        major?.data?.map((m, i) => <MenuItem
+                                            key={i}
+                                            value={"PPLG"}>{m?.name}</MenuItem>)
+                                    }
+
                                 </Select>
                             </FormControl>
                         </Grid>
@@ -175,11 +164,9 @@ const Register = () => {
                             <FormControl fullWidth style={{ marginTop: 23 }}>
                                 <InputLabel id="demo-simple-select-label-gender">Gender</InputLabel>
                                 <Select
-                                    labelId="demo-simple-select-label-gender"
                                     id="demo-simple-select"
-                                    // value={age}
                                     label="Gender"
-                                // onChange={handleChange}
+                                    {...register('gender')}
                                 >
                                     <MenuItem value={"M"}>Male</MenuItem>
                                     <MenuItem value={"F"}>Female</MenuItem>
@@ -191,7 +178,6 @@ const Register = () => {
                         type="submit"
                         fullWidth
                         variant="contained"
-                    //   onClick={validateInputs}
                     >
                         Sign Up
                     </Button>

@@ -2,6 +2,8 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const authRoutes = require('./routes/authRoutes')
 const studentRoutes = require('./routes/studentRoutes')
+const majorRoutes = require('./routes/majorRoutes')
+const cors = require('cors')
 
 const app = express()
 app.use(bodyParser.json())
@@ -9,10 +11,13 @@ app.use(bodyParser.urlencoded({ extended: false }))
 const port = 3001
 const hostName = "127.0.0.1"
 
-app.use('/v1/auth', authRoutes(express))
+const corsOption = {
+    origin: ['http://localhost:5173']
+}
 
+app.use('/v1/auth', cors(corsOption), authRoutes(express))
 app.use('/v1/student', studentRoutes(express))
-
+app.use('/v1', cors(corsOption), majorRoutes(express))
 app.get('/', (req, res) => {
     res.send({
         message: 'Home Page'
