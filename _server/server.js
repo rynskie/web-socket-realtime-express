@@ -3,7 +3,9 @@ const bodyParser = require('body-parser')
 const authRoutes = require('./routes/authRoutes')
 const studentRoutes = require('./routes/studentRoutes')
 const majorRoutes = require('./routes/majorRoutes')
+const commentRoutes = require('./routes/commentRoutes')
 const cors = require('cors')
+const postingRoutes = require('./routes/postingRoutes')
 
 const app = express()
 app.use(bodyParser.json())
@@ -16,6 +18,8 @@ const corsOption = {
 }
 
 app.use('/v1/auth', cors(corsOption), authRoutes(express))
+app.use('/v1/post', cors(corsOption), postingRoutes(express))
+app.use('/v1/comment', cors(corsOption), commentRoutes(express))
 app.use('/v1/student', studentRoutes(express))
 app.use('/v1', cors(corsOption), majorRoutes(express))
 app.get('/', (req, res) => {

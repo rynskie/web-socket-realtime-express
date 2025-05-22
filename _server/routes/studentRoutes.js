@@ -15,17 +15,13 @@ module.exports = (app) => {
                 const classValue = ["X", "XI", "XII", "XII"]
                 const isValid = classValue.includes(value)
 
-                if (!isValid) {
-                    throw new Error('classes is not registered!');
-                }
+                if (!isValid) throw new Error('classes is not registered!')
             }),
             body('gender').isString().notEmpty().custom(async (value) => {
                 const genderVal = ["M", "F"]
                 const isValid = genderVal.includes(value)
 
-                if (!isValid) {
-                    throw new Error('gender is not registered!');
-                }
+                if (!isValid) throw new Error('gender is not registered!')
             }),
             body('major_id').isString().notEmpty().custom(async (value) => {
                 const majorValue = await major.findByPk(value)
